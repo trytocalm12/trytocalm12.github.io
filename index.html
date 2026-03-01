@@ -172,12 +172,18 @@
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
+            z-index: 100;
         }
         
         .project-card:hover {
             transform: translateY(-4px);
             border-color: var(--accent-cyan);
             box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15);
+        }
+        
+        .project-card * {
+            pointer-events: none;
         }
         
         .project-icon {
