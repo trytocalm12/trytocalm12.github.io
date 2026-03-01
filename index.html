@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Frontier Lab | 音频前沿技术</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --accent-cyan: #00d4ff;
+            --accent-orange: #ff6b35;
+            --accent-purple: #a855f7;
+            --text-primary: #f0f0f5;
+            --text-secondary: #8b8b9a;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 动态背景网格 */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* 音频可视化 Canvas */
+        #audioCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        
+        /* 头部 */
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+        
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+        
+        .tagline span {
+            color: var(--accent-cyan);
+        }
+        
+        /* 音频控制 */
+        .audio-control {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 32px 0;
+        }
+        
+        .btn {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 12px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+        
+        .btn-secondary {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--accent-orange);
+            color: var(--bg-primary);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+        }
+        
+        /* 内容区块 */
+        .section {
+            background: rgba(18, 18, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title .icon {
+            font-size: 1.8rem;
+        }
+        
+        /* 项目卡片 */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .project-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15);
+        }
+        
+        .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+        
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--accent-cyan);
+        }
+        
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tech-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* 技术栈 */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .tech-item {
+            background: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-item:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+        
+        /* 文章列表 */
+        .article-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .article-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .article-item:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .article-date {
+            color: var(--accent-orange);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            min-width: 80px;
+        }
+        
+        .article-title {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .article-tags {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .article-tag {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        /* 底部 */
+        footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: var(--text-secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .social-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-link:hover {
+            color: var(--accent-cyan);
+        }
+        
+        .quote {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <canvas id="audioCanvas"></canvas>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">Audio Frontier Lab</h1>
+            <p class="tagline">探索声音的未来边界 | <span>Exploring the Sonic Frontier</span></p>
+            
+            <div class="audio-control">
+                <button class="btn" onclick="startVisualization()">
+                    <span>▶</span> 开启音频可视化
+                </button>
+                <button class="btn btn-secondary" onclick="stopVisualization()">
+                    <span>⏹</span> 停止
+                </button>
+            </div>
+        </header>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="icon">🚀</span>
+                精选项目
+            </h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">🎛️</div>
+                    <h3 class="project-title">SonicCanvas</h3>
+                    <p class="project-desc">基于 Web Audio API 的实时音频可视化引擎，支持频谱分析、波形绘制、粒子效果</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">TypeScript</span>
+                        <span class="tech-tag">Web Audio</span>
+                        <span class="tech-tag">Canvas</span>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">🗣️</div>
+                    <h3 class="project-title">VoiceForge</h3>
+                    <p class="project-desc">开源语音克隆与情感合成工具包，支持多语言语音克隆与实时语音转换</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">RVC</span>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">🎧</div>
+                    <h3 class="project-title">SpatialWeb</h3>
+                    <p class="project-desc">浏览器端空间音频渲染器，支持 Ambisonics 和个性化 HRTF</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Web Audio</span>
+                        <span class="tech-tag">Three.js</span>
+                        <span class="tech-tag">HRTF</span>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">📊</div>
+                    <h3 class="project-title">AudioMetrics</h3>
+                    <p class="project-desc">音频质量评估工具集，支持 PESQ、POLQA、STOI 等标准指标</p>
+                    <div class="project-tech">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">DSP</span>
+                        <span class="tech-tag">MOS</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="icon">📝</span>
+                最新文章
+            </h2>
+            <div class="article-list">
+                <div class="article-item">
+                    <span class="article-date">2026-02</span>
+                    <span class="article-title">Web Audio API 2026: 新特性与性能优化</span>
+                    <div class="article-tags">
+                        <span class="article-tag">#web-audio</span>
+                        <span class="article-tag">#performance</span>
+                    </div>
+                </div>
+                <div class="article-item">
+                    <span class="article-date">2026-01</span>
+                    <span class="article-title">扩散模型在音乐生成中的应用</span>
+                    <div class="article-tags">
+                        <span class="article-tag">#ai</span>
+                        <span class="article-tag">#diffusion</span>
+                        <span class="article-tag">#music</span>
+                    </div>
+                </div>
+                <div class="article-item">
+                    <span class="article-date">2025-12</span>
+                    <span class="article-title">空间音频的感知心理学基础</span>
+                    <div class="article-tags">
+                        <span class="article-tag">#spatial</span>
+                        <span class="article-tag">#psychoacoustics</span>
+                    </div>
+                </div>
+                <div class="article-item">
+                    <span class="article-date">2025-11</span>
+                    <span class="article-title">实时语音转换：从 RVC 到 DDSP</span>
+                    <div class="article-tags">
+                        <span class="article-tag">#voice-conversion</span>
+                        <span class="article-tag">#rvc</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">
+                <span class="icon">🛠️</span>
+                技术栈
+            </h2>
+            <div class="tech-stack">
+                <span class="tech-item">TypeScript</span>
+                <span class="tech-item">Python</span>
+                <span class="tech-item">Rust</span>
+                <span class="tech-item">C++</span>
+                <span class="tech-item">TensorFlow</span>
+                <span class="tech-item">PyTorch</span>
+                <span class="tech-item">Web Audio API</span>
+                <span class="tech-item">FFmpeg</span>
+                <span class="tech-item">JUCE</span>
+                <span class="tech-item">Max/MSP</span>
+            </div>
+        </section>
+        
+        <footer>
+            <div class="social-links">
+                <a href="#" class="social-link">GitHub</a>
+                <a href="#" class="social-link">Twitter</a>
+                <a href="#" class="social-link">YouTube</a>
+            </div>
+            <p class="quote">"Sound is the vocabulary of nature." — Pierre Schaeffer</p>
+            <p>© 2026 Audio Frontier Lab. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 音频可视化
+        const canvas = document.getElementById('audioCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let animationId;
+        let audioContext;
+        let analyser;
+        let dataArray;
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // 模拟音频数据（如果没有麦克风权限）
+        function generateMockData() {
+            const data = new Uint8Array(128);
+            const time = Date.now() / 1000;
+            for (let i = 0; i < data.length; i++) {
+                const freq = i / data.length;
+                data[i] = Math.sin(time * 2 + freq * 10) * 50 + 
+                          Math.sin(time * 5 + freq * 20) * 30 + 
+                          Math.random() * 20 + 100;
+            }
+            return data;
+        }
+        
+        function draw(data) {
+            ctx.fillStyle = 'rgba(10, 10, 15, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            const barWidth = canvas.width / data.length;
+            
+            for (let i = 0; i < data.length; i++) {
+                const barHeight = (data[i] / 255) * canvas.height * 0.5;
+                const x = i * barWidth;
+                const y = (canvas.height - barHeight) / 2;
+                
+                // 渐变色
+                const gradient = ctx.createLinearGradient(0, y, 0, y + barHeight);
+                gradient.addColorStop(0, 'rgba(0, 212, 255, 0)');
+                gradient.addColorStop(0.5, 'rgba(0, 212, 255, 0.8)');
+                gradient.addColorStop(1, 'rgba(168, 85, 247, 0)');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth - 1, barHeight);
+            }
+        }
+        
+        function animate() {
+            const data = analyser ? getAudioData() : generateMockData();
+            draw(data);
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        function getAudioData() {
+            analyser.getByteFrequencyData(dataArray);
+            return dataArray;
+        }
+        
+        async function startVisualization() {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(analyser);
+                
+                dataArray = new Uint8Array(analyser.frequencyBinCount);
+            } catch (err) {
+                console.log('无法访问麦克风，使用模拟数据');
+            }
+            
+            if (!animationId) {
+                animate();
+            }
+        }
+        
+        function stopVisualization() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        // 默认启动模拟可视化
+        animate();
+    </script>
+</body>
+</html>
