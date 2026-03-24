@@ -1,61 +1,253 @@
-    <section class="section">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科技洞察 | GitHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #a0a0b0;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+        
+        .section-title .icon {
+            font-size: 1.2em;
+        }
+        
+        .article-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .article-item {
+            background: rgba(255,255,255,0.05);
+            padding: 18px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #e8e8e8;
+            transition: all 0.3s ease;
+            border-left: 3px solid #667eea;
+            display: block;
+        }
+        
+        .article-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+            border-left-color: #f093fb;
+        }
+        
+        .article-date {
+            font-size: 0.85em;
+            color: #667eea;
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        .article-title {
+            font-size: 1.05em;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .article-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .article-tag {
+            font-size: 0.75em;
+            padding: 3px 10px;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            color: #a0b0ff;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #a0a0b0;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            .container {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="avatar">🚀</div>
+            <h1>科技前沿洞察</h1>
+            <p class="subtitle">每日精选科技新闻与音频技术论文</p>
+        </header>
+        
+        <section class="section">
             <h2 class="section-title">
                 <span class="icon">📝</span>
                 最新文章
             </h2>
             <div class="article-list">
-                <a href="https://finance.sina.com.cn/stock/t/2026-03-23/doc-inhryxfq2295169.shtml" class="article-item" target="_blank">
+                <a href="https://www.cls.cn/detail/2323575" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">马斯克宣布建设全球最大芯片工厂Terafab，年产超1太瓦算力</span>
+                    <span class="article-title">Arm亲自下场造芯！发布136核AI CPU，首次销售自研芯片</span>
                     <div class="article-tags">
-                        <span class="article-tag">#tesla</span>
-                        <span class="article-tag">#spaceX</span>
+                        <span class="article-tag">#arm</span>
+                        <span class="article-tag">#agi-cpu</span>
                         <span class="article-tag">#ai-chips</span>
                     </div>
                 </a>
-                <a href="http://k.sina.com.cn/article_5953190046_162d6789e06702ueue.html" class="article-item" target="_blank">
+                <a href="https://www.beijing.gov.cn/ywdt/gzdt/202603/t20260324_4565047.html" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">西湖大学发布人形机器人"泰坦o1"，搭载首个动作泛化大模型</span>
+                    <span class="article-title">2026中关村论坛年会开幕，500余项前沿科技成果集中亮相</span>
                     <div class="article-tags">
-                        <span class="article-tag">#robotics</span>
-                        <span class="article-tag">#embodied-ai</span>
+                        <span class="article-tag">#zgc-forum</span>
+                        <span class="article-tag">#innovation</span>
                         <span class="article-tag">#china</span>
                     </div>
                 </a>
-                <a href="http://k.sina.com.cn/article_5953740931_162dee08306702w37q.html" class="article-item" target="_blank">
+                <a href="https://wap.eastmoney.com/a/202603103667852628.html" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">小鹏汽车发布世界模型X-World，70亿投资端到端自动驾驶</span>
+                    <span class="article-title">AI开启半导体新时代，2026年全球产业规模预计达9750亿美元</span>
                     <div class="article-tags">
-                        <span class="article-tag">#xpeng</span>
-                        <span class="article-tag">#autonomous-driving</span>
-                        <span class="article-tag">#world-model</span>
+                        <span class="article-tag">#semiconductor</span>
+                        <span class="article-tag">#ai-infrastructure</span>
+                        <span class="article-tag">#hbm</span>
                     </div>
                 </a>
-                <a href="http://k.sina.com.cn/article_5952915705_162d248f906702nnra.html" class="article-item" target="_blank">
+                <a href="https://finance.sina.com.cn/stock/usstock/c/2026-03-24/doc-inhschnn1507771.shtml" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">瑞士AI芯片公司Kandou AI获软银2.25亿美元融资，估值4亿美元</span>
+                    <span class="article-title">Anthropic Claude可操控用户电脑完成任务，加速布局AI智能体</span>
                     <div class="article-tags">
-                        <span class="article-tag">#kandou</span>
-                        <span class="article-tag">#softbank</span>
-                        <span class="article-tag">#funding</span>
+                        <span class="article-tag">#anthropic</span>
+                        <span class="article-tag">#claude</span>
+                        <span class="article-tag">#ai-agent</span>
                     </div>
                 </a>
-                <a href="https://weekly.caixin.com/2026-03-14/102422826.html" class="article-item" target="_blank">
+                <a href="https://finance.sina.com.cn/tech/digi/2026-03-24/doc-inhschnu0316883.shtml" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">AI Agent接管支付：支付宝"AI付"用户破亿，累计支付超2亿笔</span>
+                    <span class="article-title">全球最大主权财富基金拟让AI参与投资决策，人类监督不可或缺</span>
                     <div class="article-tags">
-                        <span class="article-tag">#alipay</span>
-                        <span class="article-tag">#ai-payment</span>
-                        <span class="article-tag">#agent</span>
+                        <span class="article-tag">#norway</span>
+                        <span class="article-tag">#ai-finance</span>
+                        <span class="article-tag">#sovereign-wealth</span>
                     </div>
                 </a>
-                <a href="https://database.caixin.com/2026-03-14/102422815.html" class="article-item" target="_blank">
+                <a href="http://k.sina.com.cn/article_5953190046_162d6789e06702uoxa.html" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">字节跳动计划2026年投入500亿元建设AI数据中心与算力基础设施</span>
+                    <span class="article-title">Hut 8推进模块化AI算力基础设施，可在训练与挖矿间灵活切换</span>
                     <div class="article-tags">
-                        <span class="article-tag">#bytedance</span>
+                        <span class="article-tag">#hut8</span>
+                        <span class="article-tag">#modular</span>
                         <span class="article-tag">#infrastructure</span>
-                        <span class="article-tag">#compute</span>
                     </div>
                 </a>
             </div>
@@ -67,41 +259,52 @@
                 音频前沿论文
             </h2>
             <div class="article-list">
-                <a href="https://arxiv.org/abs/2601.17901" class="article-item" target="_blank">
+                <a href="https://arxiv.org/abs/2603.22252" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">Speech Emotion Recognition with ASR Integration: 端到端语音情感识别系统</span>
+                    <span class="article-title">SelfTTS: 跨说话人风格迁移TTS模型，无需外部编码器</span>
                     <div class="article-tags">
-                        <span class="article-tag">#emotion</span>
-                        <span class="article-tag">#asr</span>
+                        <span class="article-tag">#tts</span>
+                        <span class="article-tag">#style-transfer</span>
                         <span class="article-tag">#eess.AS</span>
                     </div>
                 </a>
-                <a href="https://arxiv.org/abs/2601.22792" class="article-item" target="_blank">
+                <a href="https://arxiv.org/abs/2603.22131" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">CALM: 多说话人ASR个性化联合上下文声学-语言建模 (ICASSP 2026)</span>
+                    <span class="article-title">WiRD-Gest: 基于单Wi-Fi收发器的手势识别系统</span>
                     <div class="article-tags">
-                        <span class="article-tag">#personalization</span>
-                        <span class="article-tag">#multi-speaker</span>
+                        <span class="article-tag">#wifi-sensing</span>
+                        <span class="article-tag">#gesture</span>
                         <span class="article-tag">#eess.AS</span>
                     </div>
                 </a>
-                <a href="https://arxiv.org/abs/2602.09044" class="article-item" target="_blank">
+                <a href="https://arxiv.org/abs/2603.21888" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">Beyond the Utterance: 超长上下文语音识别实证研究，支持1小时音频</span>
+                    <span class="article-title">自适应联邦学习微调框架：支持异构设备的语音SSL</span>
                     <div class="article-tags">
-                        <span class="article-tag">#long-context</span>
-                        <span class="article-tag">#attention</span>
-                        <span class="article-tag">#cs.CL</span>
+                        <span class="article-tag">#federated</span>
+                        <span class="article-tag">#ssl</span>
+                        <span class="article-tag">#eess.AS</span>
                     </div>
                 </a>
-                <a href="https://arxiv.org/abs/2602.22039" class="article-item" target="_blank">
+                <a href="https://arxiv.org/abs/2603.21608" class="article-item" target="_blank">
                     <span class="article-date">2026-03</span>
-                    <span class="article-title">TG-ASR: 翻译引导学习+并行门控交叉注意力低资源语音识别</span>
+                    <span class="article-title">DiT-Flow: 基于Diffusion Transformer的鲁棒语音增强</span>
                     <div class="article-tags">
-                        <span class="article-tag">#low-resource</span>
-                        <span class="article-tag">#attention</span>
+                        <span class="article-tag">#speech-enhancement</span>
+                        <span class="article-tag">#flow-matching</span>
                         <span class="article-tag">#eess.AS</span>
                     </div>
                 </a>
             </div>
         </section>
+        
+        <footer>
+            <p>每日自动更新 | 数据来源: 各大科技媒体 / arXiv</p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/trytocalm12">GitHub</a> • 
+                <a href="#">RSS</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
